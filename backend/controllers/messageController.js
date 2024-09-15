@@ -22,7 +22,7 @@ export const sendMessage = async (req, res) => {
       gotConversation.messages.push(newMassage._id);
     }
     await gotConversation.save();
-    return res.status(200).json({ Message: "Send message Successfully" });
+    return res.status(200).json({ newMassage });
     //socket.io
   } catch (error) {
     console.log(error);

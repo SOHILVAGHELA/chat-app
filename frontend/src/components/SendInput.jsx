@@ -1,10 +1,36 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { IoSend } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { setMessages } from "../Redux/messageSlice";
+
 function SendInput() {
+  const [message, setMessage] = useState("");
+  const { selectedUser } = useSelector((store) => store.user);
+  const { messages } = useSelector((store) => store.message);
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!message) return;
+    // console.log(message);
+    try {
+      axios.defaults.withCredentials = true;
+      const res = await axios.post(
+        `http://localhost:4004/api/v1/message/send/${selectedUser?._id}`,
+        { message }
+      );
+      console.log(res);
+      dispatch(setMessages([...messages, res?.data?.newMassage]));
+      setMessage("");
+    } catch (error) {}
+  };
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <div className="flex rounded-lg shadow-sm">
         <input
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
           type="text"
           id="hs-search-box-with-loading-2"
           name="hs-search-box-with-loading-2"
@@ -12,13 +38,13 @@ function SendInput() {
           placeholder="Send a message   "
         />
         <button
-          type="button"
+          type="submit"
           className="w-[2.875rem] h-[2.875rem] shrink-0 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-e-md border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
         >
-          send
+          <IoSend />
         </button>
       </div>
-    </div>
+    </form>
   );
 }
 
