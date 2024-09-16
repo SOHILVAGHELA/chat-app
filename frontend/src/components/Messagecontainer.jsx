@@ -4,7 +4,7 @@ import Messages from "./Messages";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelecterdUser } from "../Redux/userSlice";
 function Messagecontainer() {
-  const { selectedUser } = useSelector((store) => store.user);
+  const { selectedUser, authUser } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   useEffect(() => {
     return () => dispatch(setSelecterdUser(null));
@@ -12,7 +12,7 @@ function Messagecontainer() {
   return (
     <>
       {selectedUser !== null ? (
-        <div className="md:min-w-[450px]  flex  flex-col p-5">
+        <div className="md:min-w-[550px]  flex  flex-col p-5">
           <div className="flex gap-2  items-center bg-zinc-800 text-white px-4 py-2 mb-2  ">
             <div className="avatar online ">
               <div className="w-10 rounded-full">
@@ -29,7 +29,12 @@ function Messagecontainer() {
           <SendInput></SendInput>
         </div>
       ) : (
-        <h1>Let's start conversation</h1>
+        <div className="md:min-w-[550px] flex flex-col justify-center items-center">
+          <p className="text-white text-4xl font-bold">
+            Hi {authUser.username}
+          </p>
+          <h1 className="text-2xl text-white">Let's start conversation</h1>
+        </div>
       )}
     </>
   );
