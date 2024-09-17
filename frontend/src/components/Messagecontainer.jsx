@@ -31,7 +31,7 @@ function Messagecontainer() {
       ) : (
         <div className="md:min-w-[550px] flex flex-col justify-center items-center">
           <p className="text-white text-4xl font-bold">
-            Hi {authUser.username}
+            Hi {authUser?.username}
           </p>
           <h1 className="text-2xl text-white">Let's start conversation</h1>
         </div>

@@ -1,10 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import Otherusers from "./Otherusers";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { setOtherUser } from "../Redux/userSlice";
 function Sidebar() {
+  const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+  const { otherUser } = useSelector((store) => store.user);
   const navigate = useNavigate();
+
+  const HandleSubmit = (e) => {
+    e.preventDefault();
+    // console.log(search);
+    const conversationUser = otherUser?.find((user) =>
+      user.fullName.toLowerCase().includes(search.toLowerCase())
+    );
+    if (conversationUser) {
+      dispatch(setOtherUser([conversationUser]));
+    } else {
+      toast.error("User not Found");
+    }
+  };
   const Logout = async () => {
     try {
       const res = await axios.get("http://localhost:4004/api/v1/user/logout");
@@ -15,9 +33,11 @@ function Sidebar() {
   };
   return (
     <div className="border-r border-slate-500 p-5 flex flex-col ">
-      <form action="">
+      <form onSubmit={HandleSubmit}>
         <div className="flex rounded-lg shadow-sm">
           <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             type="text"
             id="hs-leading-button-add-on-with-icon"
             name="hs-leading-button-add-on-with-icon"
@@ -26,7 +46,7 @@ function Sidebar() {
             aria-label="Search"
           />
           <button
-            type="button"
+            type="submit"
             className="w-[2.875rem] h-[2.875rem] shrink-0 inline-flex justify-center items-center gap-x-2 text-sm font-semibold border border-transparent bg-zinc-400 text-white hover:bg-zinc-700 focus:outline-none focus:bg-zinc-700 disabled:opacity-50 disabled:pointer-events-none"
             aria-label="Search button"
           >
