@@ -17,8 +17,13 @@ export const register = async (req, res) => {
         .json({ Message: "Username Already Exit try  Different" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const MaleProfilePhoto = "https://avatar.iran.liara.run/public/boy";
-    const FeMaleProfilePhoto = "https://avatar.iran.liara.run/public/girl";
+
+    // profilePhoto
+    const MaleProfilePhoto = `https://avatar.iran.liara.run/public/boy?username=${username}`;
+    const FeMaleProfilePhoto = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+
+    // const MaleProfilePhoto = "https://avatar.iran.liara.run/public/boy";
+    // const FeMaleProfilePhoto = "https://avatar.iran.liara.run/public/girl";
     await User.create({
       fullName,
       username,
