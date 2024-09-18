@@ -9,16 +9,18 @@ function Sidebar() {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const { otherUser } = useSelector((store) => store.user);
+  const [userList, setUserList] = useState(otherUser);
   const navigate = useNavigate();
 
   const HandleSubmit = (e) => {
     e.preventDefault();
-    // console.log(search);
-    const conversationUser = otherUser?.find((user) =>
+    const conversationUser = otherUser?.filter((user) =>
       user.fullName.toLowerCase().includes(search.toLowerCase())
     );
+    console.log(otherUser);
+    console.log("conversationUser", conversationUser);
     if (conversationUser) {
-      dispatch(setOtherUser([conversationUser]));
+      setUserList(conversationUser);
     } else {
       toast.error("User not Found");
     }
@@ -32,8 +34,10 @@ function Sidebar() {
       dispatch(setAuthUser(null));
     } catch (error) {}
   };
+  const { authUser } = useSelector((store) => store.user);
   return (
     <div className="border-r border-slate-500 p-5 flex flex-col ">
+      <h1>{authUser.username}</h1>
       <form onSubmit={HandleSubmit}>
         <div className="flex rounded-lg shadow-sm">
           <input
@@ -70,7 +74,7 @@ function Sidebar() {
         </div>
       </form>
       <div className="divider px-3"></div>
-      <Otherusers></Otherusers>
+      <Otherusers userList={userList}></Otherusers>
       <div className="mt-2">
         <button onClick={Logout} className="btn btn-sm">
           Logout
