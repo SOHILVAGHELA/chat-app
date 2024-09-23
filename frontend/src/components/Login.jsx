@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "./Spinner";
 import { useDispatch } from "react-redux";
 import { setAuthUser } from "../Redux/userSlice";
+import { BASE_URL } from "../main";
 function Login() {
   const [user, setUser] = useState({
     username: "",
@@ -19,18 +20,14 @@ function Login() {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        "http://localhost:4004/api/v1/user/login",
-        user,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+      const res = await axios.post(`${BASE_URL}/api/v1/user/login`, user, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
       setLoading(false);
-      navigate("/");
+      navigate("/homepage");
       dispatch(setAuthUser(res.data));
     } catch (error) {
       setLoading(false);

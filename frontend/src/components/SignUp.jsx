@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Spinner from "./Spinner";
+import { BASE_URL } from "../main";
 
 function SignUp() {
   const [user, setUser] = useState({
@@ -38,14 +39,10 @@ function SignUp() {
 
     console.log(user);
     try {
-      const res = await axios.post(
-        `http://localhost:4004/api/v1/user/register`,
-        user,
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const res = await axios.post(`${BASE_URL}/api/v1/user/register`, user, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
 
       console.log(res);
       if (res.data.success) {

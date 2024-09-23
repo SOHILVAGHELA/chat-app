@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { IoSend } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { setMessages } from "../Redux/messageSlice";
+import { BASE_URL } from "../main";
 
 function SendInput() {
   const [message, setMessage] = useState("");
@@ -17,7 +18,7 @@ function SendInput() {
     try {
       axios.defaults.withCredentials = true;
       const res = await axios.post(
-        `http://localhost:4004/api/v1/message/send/${selectedUser?._id}`,
+        `${BASE_URL}/api/v1/message/send/${selectedUser?._id}`,
         { message }
       );
       console.log(res);

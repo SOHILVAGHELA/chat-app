@@ -7,11 +7,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSocket } from "./Redux/socketSlice";
 import io from "socket.io-client";
 import { setOnlineUser } from "./Redux/userSlice";
+import { BASE_URL } from "./main";
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/homepage",
     element: <Homepage></Homepage>,
   },
+  {
+    path: "/",
+    element: <Login></Login>,
+  },
+  ,
   {
     path: "/login",
     element: <Login></Login>,
@@ -26,7 +32,7 @@ function App() {
   const { authUser } = useSelector((store) => store.user);
   useEffect(() => {
     if (authUser) {
-      const socket = io("http://localhost:4004", {
+      const socket = io(`${BASE_URL}`, {
         query: { userId: authUser._id },
       });
       dispatch(setSocket(socket));
